@@ -35,7 +35,26 @@ def game_scene():
     # repeat forever
     while True:
         # get user input
+        keys = ugame.buttons.get_pressed()
 
+        # this if statement executes user
+        # input & does the following
+        if keys & ugame.K_X:
+            print("A has been pressed.")
+        if keys & ugame.K_O:
+            print("B has been pressed.")
+        if keys & ugame.K_START:
+            print("Start has been pressed.")
+        if keys & ugame.K_SELECT:
+            print("Select has been pressed.")
+        if keys & ugame.K_RIGHT:
+            ship.move(ship.x + 1, ship.y)
+        if keys & ugame.K_LEFT:
+            ship.move(ship.x - 1, ship.y)
+        if keys & ugame.K_UP:
+            ship.move(ship.x, ship.y - 1)
+        if keys & ugame.K_DOWN:
+            ship.move(ship.x, ship.y + 1)
         # update game logic for the characters to move
 
         # redraw the ship
