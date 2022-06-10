@@ -3,12 +3,12 @@
 # Created by: Sarah
 # Created on: June 9th, 2022.
 # This program  is the Space Alien program on the Pybadge.
-import ugame
 import stage
+import ugame
 
 
 def game_scene():
-    # this function the main game scene 
+    # this function the main game scene
 
     # import image for the CircuitPython
     image_bank_background = stage.Bank.from_bmp16("space_aliens_background.bmp")
@@ -24,7 +24,7 @@ def game_scene():
     # create a stage for the background  to show up on
     # and the size (10x8 tiles of the size 16x16)
     game = stage.Stage(ugame.display, 60)
-    
+
     # sets layer of all the spite so that items show up
     # in order
     game.layers = [ship] + [background]
@@ -41,6 +41,7 @@ def game_scene():
         # redraw the ship
         game.render_sprites([ship])
         game.tick()
+
 
 if __name__ == "__main__":
     game_scene()
