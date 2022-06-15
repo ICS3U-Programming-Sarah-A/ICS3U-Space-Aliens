@@ -20,3 +20,6 @@ button_state = {
     "button_still_pressed": "still pressed",
     "button_released": "released"
 }
+# new pallet for filled text
+NEW_PALETTE = (b'\xff\xff\x00\x22\xcey\x22\xff\xff\xff\xff\xff\xff\xff\xff\xff'
+              b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff')
