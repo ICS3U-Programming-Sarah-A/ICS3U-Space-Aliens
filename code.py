@@ -6,6 +6,7 @@
 import constants
 import stage
 import ugame
+<<<<<<< HEAD
 import time
 import random
 
@@ -75,6 +76,8 @@ def splash_scene():
         # a time in which it waits for 2 seconds
         time.sleep(2.0)
         menu_scene()
+=======
+>>>>>>> 101b1f0d23923dce6ea6f02ef4c7744b9a02c2ba
 
 
 def menu_scene():
