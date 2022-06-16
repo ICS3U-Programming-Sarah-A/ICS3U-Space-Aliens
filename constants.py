@@ -13,13 +13,15 @@ SPRITE_SIZE = 16
 FPS = 60
 SPRITE_MOVEMENT_SPEED = 1
 
-# Usin fo buttons state
+# Usin for buttons state
 button_state = {
     "button_up": "up",
     "button_just_pressed": "just pressed",
     "button_still_pressed": "still pressed",
-    "button_released": "released"
+    "button_released": "released",
 }
 # new pallet for filled text
-NEW_PALETTE = (b'\xff\xff\x00\x22\xcey\x22\xff\xff\xff\xff\xff\xff\xff\xff\xff'
-              b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff')
+NEW_PALETTE = (
+    b"\xff\xff\x00\x22\xcey\x22\xff\xff\xff\xff\xff\xff\xff\xff\xff"
+    b"\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff"
+)
