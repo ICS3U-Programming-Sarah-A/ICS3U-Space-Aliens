@@ -21,18 +21,18 @@ jobs:
 
      with:
        # run Prettier and change code that needs fixing, before next section
-       prettier_options: --write **/*.{html,css,js,md}
-       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      prettier_options: --write **/*.{html,css,js,md}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
    - name: Run GitHub Super Linter
      uses: github/super-linter@main
      env:
-        VALIDATE_ALL_CODEBASE: true
-        VALIDATE_CLANG_FORMAT: false
-        VALIDATE_JAVASCRIPT_STANDARD: false
-        VALIDATE_PYTHON_FLAKE8: false
-        VALIDATE_GITLEAKS: false # for secrets detection
-        VALIDATE_JSCPD: false # for copy and paste detection
-        DEFAULT_BRANCH: main
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      VALIDATE_ALL_CODEBASE: true
+      VALIDATE_CLANG_FORMAT: false
+      VALIDATE_JAVASCRIPT_STANDARD: false
+      VALIDATE_PYTHON_FLAKE8: false
+      VALIDATE_GITLEAKS: false # for secrets detection
+      VALIDATE_JSCPD: false # for copy and paste detection
+      DEFAULT_BRANCH: main
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
