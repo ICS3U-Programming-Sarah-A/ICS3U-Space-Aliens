@@ -4,12 +4,10 @@
 
 ##################################################
 ---
-
 name: Mr Coxall's Super Linter
 on: [push, pull_request]
 
 jobs:
-
  run-linters:
    name: Linters
    runs-on: ubuntu-latest
@@ -22,9 +20,9 @@ jobs:
        uses: Mr-Coxall/prettier_action@main
 
        with:
-       # run Prettier and change code that needs fixing, before next section
-       prettier_options: --write **/*.{html,css,js,md}
-       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         # run Prettier and change code that needs fixing, before next section
+         prettier_options: --write **/*.{html,css,js,md}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
      - name: Run GitHub Super Linter
        uses: github/super-linter@main
