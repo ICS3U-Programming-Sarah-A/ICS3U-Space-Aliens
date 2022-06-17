@@ -3,11 +3,14 @@
 # Created by: Sarah
 # Created on: June 9th, 2022.
 # This program  is the Space Alien program on the Pybadge.
+import random
+import time
+
+# This line of code executes the libaries that have been
+# imported
 import constants
 import stage
 import ugame
-import time
-import random
 
 
 def splash_scene():
