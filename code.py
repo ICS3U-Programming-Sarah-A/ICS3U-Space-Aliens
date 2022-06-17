@@ -3,12 +3,10 @@
 # Created by: Sarah
 # Created on: June 9th, 2022.
 # This program  is the Space Alien program on the Pybadge.
-import constants
 import random
 import time
 
-
-
+import constants
 import stage
 import ugame
 
