@@ -136,6 +136,14 @@ def menu_scene():
 def game_scene():
     # this function the main game scene
 
+    # keeps track of the score
+    score = 0
+    score_text = stage.Text(width=29, height=14)
+    score_text.clear()
+    score_text.cursor(0, 0)
+    score_text.move(1, 1)
+    score_text.text("Score: {}".format(score))
+
     def show_alien():
         # this function takes an alien off from the screen & moves
         # it
@@ -166,6 +174,12 @@ def game_scene():
     sound.stop()
     sound.mute(False)
 
+    # imports the sound into the game
+    boom_sound = open("boom.wav", "rb")
+    sound = ugame.audio
+    sound.stop()
+    sound.mute(False)
+
     # set background image to 0 & the size
     # 10 x 8 tiles of the size 16x16
     background = stage.Grid(
@@ -182,13 +196,6 @@ def game_scene():
     # the sprite will be updated every frame
     ship = stage.Sprite(
         image_bank_sprites, 5, 75, constants.SCREEN_Y - (2 * constants.SPRITE_SIZE)
-    )
-
-    alien = stage.Sprite(
-        image_bank_sprites,
-        9,
-        int(constants.SCREEN_X / 2 - constants.SPRITE_SIZE / 2),
-        16,
     )
 
     # creates a list of aliens & places them onto the screen, then
@@ -208,7 +215,7 @@ def game_scene():
         a_single_laser = stage.Sprite(
             image_bank_sprites, 10, constants.OFF_SCREEN_X, constants.OFF_SCREEN_Y
         )
-        lasers.append(a_single_laser)
+    lasers.append(a_single_laser)
 
     # create a stage for the background  to show up on
     # and the size (10x8 tiles of the size 16x16)
@@ -216,7 +223,7 @@ def game_scene():
 
     # sets layer of all the spite so that items show up
     # in order
-    game.layers = lasers + [ship] + aliens + [background]
+    game.layers = [score_text] + lasers + [ship] + aliens + [background]
 
     # render all sprites
     game.render_block()
@@ -300,6 +307,48 @@ def game_scene():
                         constants.OFF_SCREEN_X, constants.OFF_SCREEN_Y
                     )
                     show_alien()
+                    score -= 1
+                    if score < 0:
+                        score = 0
+                    score_text.clear()
+                    score_text.cursor(0, 0)
+                    score_text.move(1, 1)
+                    score_text.text("Score {}".format(score))
+
+        # this loop keeps in check of the collison &
+        # if the laser hits on of the aliens, as well as the bounding
+        # boxes
+        for laser_number in range(len(lasers)):
+            if lasers[laser_number].x > 0:
+                for alien_number in range(len(aliens)):
+                    if aliens[alien_number].x > 0:
+                        if stage.collide(
+                            lasers[laser_number].x + 6,
+                            lasers[laser_number].y + 2,
+                            lasers[laser_number].x + 11,
+                            lasers[laser_number].y + 12,
+                            aliens[alien_number].x + 1,
+                            aliens[alien_number].y,
+                            aliens[alien_number].x + 15,
+                            aliens[alien_number].y + 15,
+                        ):
+                            # you hit an alien
+                            aliens[alien_number].move(
+                                constants.OFF_SCREEN_X, constants.OFF_SCREEN_Y
+                            )
+                            lasers[laser_number].move(
+                                constants.OFF_SCREEN_X, constants.OFF_SCREEN_Y
+                            )
+                            sound.stop()
+                            sound.play(boom_sound)
+                            show_alien()
+                            show_alien()
+                            score = score + 1
+                            score_text.clear()
+                            score_text.cursor(0, 0)
+                            score_text.move(1, 1)
+                            score_text.text("Score: {}".format(score))
+
         # redraws the ship
         game.render_sprites(aliens + lasers + [ship])
         game.tick()
