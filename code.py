@@ -5,6 +5,7 @@
 # This program  is the Space Alien program on the Pybadge.
 import random
 import time
+import supervisor
 
 # This line of code executes the libraries that have been
 # imported
@@ -180,6 +181,12 @@ def game_scene():
     sound.stop()
     sound.mute(False)
 
+    # imports sound into the game
+    crash_sound = open("crash.wav", "rb")
+    sound = ugame.audio
+    sound.stop()
+    sound.mute(False)
+
     # set background image to 0 & the size
     # 10 x 8 tiles of the size 16x16
     background = stage.Grid(
@@ -215,7 +222,7 @@ def game_scene():
         a_single_laser = stage.Sprite(
             image_bank_sprites, 10, constants.OFF_SCREEN_X, constants.OFF_SCREEN_Y
         )
-    lasers.append(a_single_laser)
+        lasers.append(a_single_laser)
 
     # create a stage for the background  to show up on
     # and the size (10x8 tiles of the size 16x16)
@@ -240,6 +247,13 @@ def game_scene():
                 a_button = constants.button_state["button_just_pressed"]
             elif a_button == constants.button_state["button_just_pressed"]:
                 a_button = constants.button_state["button_still_pressed"]
+
+                # fires a laser if all hasn't been used yet
+                for laser_number in range(len(lasers)):
+                    if lasers[laser_number].x < 0:
+                        lasers[laser_number].move(ship.x, ship.y)
+                        sound.play(pew_sound)
+                        break
             else:
                 if a_button == constants.button_state["button_still_pressed"]:
                     a_button = constants.button_state["button_released"]
@@ -271,15 +285,6 @@ def game_scene():
             pass
         if keys & ugame.K_DOWN != 0:
             pass
-
-        # play sounds once A button has been pressed
-        if a_button == constants.button_state["button_just_pressed"]:
-            # fires a laser if all hasn't been used yet
-            for laser_number in range(len(lasers)):
-                if lasers[laser_number].x < 0:
-                    lasers[laser_number].move(ship.x, ship.y)
-                    sound.play(pew_sound)
-                    break
 
         # sound play pew sound then breaks out of loop ^
         # each frame move the lasers, that have been fired
@@ -349,8 +354,89 @@ def game_scene():
                             score_text.move(1, 1)
                             score_text.text("Score: {}".format(score))
 
-        # redraws the ship
+        # each frame checks if an alien touches the space ship
+        for alien_number in range(len(aliens)):
+            if aliens[alien_number].x > 0:
+                if stage.collide(
+                    aliens[alien_number].x + 1,
+                    aliens[alien_number].y,
+                    aliens[alien_number].x + 15,
+                    aliens[alien_number].y + 15,
+                    ship.x,
+                    ship.y,
+                    ship.x + 15,
+                    ship.y + 15,
+                ):
+                    # alien hits the ship
+                    sound.stop()
+                    sound.play(crash_sound)
+                    time.sleep(3.0)
+                    game_over_scene(score)
+
+        # redraw sprite list
         game.render_sprites(aliens + lasers + [ship])
+        game.tick()  # wait until it refreshes
+
+
+def game_over_scene(final_score):
+    # this function is the game over scene
+
+    # turn off sound from last scene
+    # sound = ugame.audio
+    # sound.stop()
+
+    # image bank for CircuiPython
+    image_bank_2 = stage.Bank.from_bmp16("mt_game_studio.bmp")
+
+    # sets the background to image 0 in the image back
+    background = stage.Grid(
+        image_bank_2, constants.SCREEN_GRID_X, constants.SCREEN_GRID_Y
+    )
+
+    # add text objects
+    text_image = []
+    text_final = stage.Text(
+        width=29, height=14, font=None, palette=constants.NEW_PALETTE, buffer=None
+    )
+    text_final.move(22, 20)
+    text_final.text("Final score: {:0>2d}".format(final_score))
+    text_image.append(text_final)
+
+    text_game_over = stage.Text(
+        width=29, height=14, font=None, palette=constants.NEW_PALETTE, buffer=None
+    )
+    text_game_over.move(43, 60)
+    text_game_over.text("Game Over!")
+    text_image.append(text_game_over)
+
+    text_select = stage.Text(
+        width=29, height=14, font=None, palette=constants.NEW_PALETTE, buffer=None
+    )
+    text_select.move(32, 110)
+    text_select.text("Press select!")
+    text_image.append(text_select)
+
+    # create a stage for the background to show up on
+    # and set the frame rate to 60 fps
+    game = stage.Stage(ugame.display, constants.FPS)
+
+    # set layers so hat items show up in oder
+    game.layes = text_image + [background]
+
+    # render the backround & initial location of
+    # sprite list
+    game.render_block()
+
+    # repeat forever
+    while True:
+        # get use input
+        keys = ugame.buttons.get_pressed()
+
+        # start buton is selected
+        if keys & ugame.K_SELECT != 0:
+            supervisor.reload()
+
+        # update game logic
         game.tick()
 
 
