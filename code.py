@@ -5,12 +5,13 @@
 # This program  is the Space Alien program on the Pybadge.
 import random
 import time
-import supervisor
+
 
 # This line of code executes the libraries that have been
 # imported
 import constants
 import stage
+import supervisor
 import ugame
 
 
